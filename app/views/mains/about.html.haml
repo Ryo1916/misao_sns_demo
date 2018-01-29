@@ -1,0 +1,44 @@
+.container-fluid{ style: "background: linear-gradient(#D3D8E8, white);" }
+  .about{ style: "padding:20px 0;" }
+    .col-md-8.offset-md-2
+      .card{ style: "margin-bottom:20px;" }
+        .card-body{ style: "text-align:center;" }
+          %h3{ style: "font-family:cursive;" } - About -
+          %p{ style: "font-size:15px; font-family:sans-serif; text-align:left; margin-left:40px; margin-right:40px; line-height:20px;" } 
+          The Beatles were an English rock band formed in Liverpool in 1960. With members John Lennon, Paul McCartney, George Harrison and Ringo Starr, they became widely regarded as the foremost and most influential music band.
+          Rooted in skiffle, beat and 1950s rock and roll, the Beatles later experimented with several musical styles, ranging from pop ballads and Indian music to psychedelia and hard rock,
+          often incorporating classical elements and unconventional recording techniques in innovative ways.
+          In 1963 their enormous popularity first emerged as "Beatlemania"; as the group's music grew in sophistication, led by primary songwriters Lennon and McCartney,
+          the band were integral to pop music's evolution into an art form and to the development of the counterculture of the 1960s.
+
+      .card
+        .card-body{ style: "text-align:center;" }
+          %h3{ style: "font-family:cursive;" } Member
+          .row
+            .col-md-6
+              =image_tag "john-lennon.JPG", style: "border-radius:50%;"
+              %p{ style: "font-size:20px; font-family:cursive; padding-top:20px;" } John Lennon
+              %p CO-FOUNDER & Vocal / Guitar
+            .col-md-6
+              =image_tag "paul-mccartney.JPG", style: "border-radius:50%;", width: "180px", height: "170px"
+              %p{ style: "font-size:20px; font-family:cursive; padding-top:20px;" } Paul McCartney
+              %p CO-FOUNDER & Bass / Chorus
+          .row
+            .col-md-6
+              =image_tag "george-harrison.jpg", style: "border-radius:50%;", width: "180px", height: "170px"
+              %p{ style: "font-size:20px; font-family:cursive; padding-top:20px;" } George Harrison
+              %p CO-FOUNDER & Guitar / Chorus
+            .col-md-6
+              =image_tag "ringo-starr.JPG", style: "border-radius:50%", width: "180px", height: "170px"
+              %p{ style: "font-size:20px; font-family:cursive; padding-top:20px;" } Ringo starr
+              %p CO-FOUNDER & Drums
+          .row
+            .col-md-12
+              =image_tag "george-martin.jpg", style: "border-radius:50%", width: "180px", height: "170px"
+              %p{ style: "font-size:20px; font-family:cursive; padding-top:20px;" } George Martin
+              %p CO-FOUNDER & Record producer / Arranger / Composer / Conductor / Audio engineer
+          .row
+            .col-md-12
+              =image_tag "brian-epstein.JPG", style: "border-radius:50%", width: "180px", height: "170px"
+              %p{ style: "font-size:20px; font-family:cursive; padding-top:20px;" } Brian Epstein
+              %p MANAGER & Music entrepreneur / impresario

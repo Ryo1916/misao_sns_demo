@@ -1,0 +1,185 @@
+<div class="container">
+  <div class="row" style="margin-bottom:20px;">
+    <div class="col-md-6">
+      <div class="form-group">
+        <h2><%= resource_name.to_s.humanize %> Profile</h2>
+        <!-- form_with options should be changed same as registration/new.html.erb. example(:user, url: registration_path(:user), multipart: true,) -->
+        <%= form_for(resource,
+            as: resource_name,
+            url: registration_path(resource_name),
+            multipart: true,
+            html: { method: :put }) do |f| %>
+        <%= devise_error_messages! %>
+
+          <div class="field">
+            <%= f.label :name %><br />
+            <%= f.text_field :name, autofocus: true, placeholder: "Enter your name", class: "form-control" %>
+          </div>
+
+          <div class="field">
+            <%= f.label :email %><br />
+            <%= f.email_field :email, autofocus: true, placeholder: "Enter your email", class: "form-control" %>
+          </div>
+
+          <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+            <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+          <% end %>
+
+          <div class="field">
+            <%= f.label :password %> <i>(leave blank if you don't want to change it)</i><br />
+            <%= f.password_field :password, autocomplete: "off", placeholder: "Enter new password", class: "form-control" %>
+            <% if @minimum_password_length %>
+            <!-- <br /> -->
+            <em><%= @minimum_password_length %> characters minimum</em>
+            <% end %>
+          </div>
+
+          <div class="field">
+            <%= f.label :password_confirmation %> <i>(leave blank if you don't want to change it)</i><br />
+            <%= f.password_field :password_confirmation, autocomplete: "off", placeholder: "Enter new pasword again", class: "form-control" %>
+          </div>
+
+          <div class="upload" style="margin-bottom:20px;">
+            <%= f.label :image_name %><br />
+            <label for="user_image_name">
+              <div class="btn btn-success">Change your image</div>
+            </label>
+            <%= f.file_field :image_name, id: :user_image_name, class: "image-upload" %>
+
+            <script>
+              $(document).ready(function(){
+                $('#user_image_name').val("");
+                $('#user_image_name').change(function(){
+                  // To display only file name(except file path).
+                  var array = $("#user_image_name").val();
+                  // To use '\' as a split symbol, it should be '\\' because of \ is special symbol.
+                  var image_name = array.split("\\");
+                  $('#display_image_name').html(image_name[2]);
+                });
+              });
+            </script>
+            <span id="display_image_name"></span>
+            <p id="image-error" style="color:red; display:none"></p>
+          </div>
+
+          <div class="field">
+            <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
+            <%= f.password_field :current_password, autocomplete: "off", placeholder: "Enter current password", class: "form-control" %>
+          </div>
+
+          <div class="actions">
+            <%= f.submit "Update", class: "btn btn-warning btn-block" %>
+          </div>
+        <% end %>
+      </div>
+
+      <hr>
+
+      <h3>Cancel my account</h3>
+      <p>Unhappy?
+        <%= button_to "Cancel my account",
+            registration_path(resource_name),
+            data: { confirm: "Are you sure?" },
+            method: :delete,
+            class: "btn btn-primary" %>
+      </p>
+
+    </div>
+
+    <div class="col-md-6" style="margin-top:20px;">
+      <div class="card">
+        <div class="card-header">
+          <ul class="nav nav-pills card-header-pills">
+            <li class="nav-item" style="cursor:pointer;">
+              <a class="nav-link active your-posts-link" id="<%= current_user.id %>">Your Posts</a>
+            </li>
+            <li class="nav-item" style="cursor:pointer;">
+              <a class="nav-link liked-posts-link" id="<%= current_user.id %>">Liked Posts</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <% @posts.each do |post| %>
+        <div class="card" style="cursor:pointer;">
+          <div class="row card-body users-posts">
+            <div class="col-md-1 user-image" style="float: left;">
+              <%= image_tag(post.user.image_name, width: "50px", height: "50px", style: "border-radius:4px;") %>
+            </div>
+            <div class="col-md-11" style="padding-left:30px;">
+              <div class="post-header">
+                <strong><%= post.user.name %></strong>
+                <% t = post.updated_at %>
+                <span style="font-style:italic;"><%= t.strftime(" %Y %b %d") %></span> <br>
+              </div>
+              <div class="post-content">
+                <%= post.content %> <br>
+                <div class="post-image" style="clear: left;">
+                  <% unless post.image_name.blank? %>
+                    <%= image_tag(post.image_name, width: "100%", height: "100%", style: "margin-top:10px;") %>
+                  <% end %>
+                </div>
+                <div class="post-address">
+                  <% unless post.address.blank? %>
+                  <%= image_tag "http://maps.google.com/maps/api/staticmap?size=450x300&sensor=false&zoom=15&markers=#{post.latitude}%2C#{post.longitude}" %>
+                  <p> Address: <%= post.address %> </p>
+
+                  <script>
+                    var id = <%= post.id %>
+                    var postedLatitude = <%= post.latitude %>
+                    var postedLongitude = <%= post.longitude %>
+                  </script>
+                    <p class="posted-address" style="display:none;"></p>
+
+                    <style type="text/css">
+                      .posted-map {
+                        width: 100%;
+                        height: 400px;
+                        margin-left:auto;
+                        margin-right:auto;
+                        text-align:left;
+                        display: none;
+                      }
+                    </style>
+                    <div class="posted-map"></div>
+                  <% end %>
+                </div>
+              </div>
+
+              <div class="post-link" style="display:block; padding-top:20px;">
+                <% if Like.find_by(user_id: current_user.id, post_id: post.id) %>
+                  <%= link_to("/likes/#{post.id}/destroy", {method: "post"}) do %>
+                    <i class="fa fa-heart like-btn-unlike"></i>
+                  <% end %>
+                <% else %>
+                  <%= link_to("/likes/#{post.id}/create", {method: "post"}) do %>
+                    <i class="fa fa-heart like-btn"></i>
+                  <% end %>
+                <% end %>
+                <%= Like.where(post_id: post.id).count %>
+                <i class="fa fa-comment"></i>
+                <i class="fa fa-share"></i>
+                <% if current_user.id == post.user.id %>
+                <ul style="float:right;">
+                  <li><%= link_to 'Show', post %></li>
+                  <li><%= link_to 'Edit', edit_post_path(post) %></li>
+                  <li><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+                  <!-- <li><%= button_to 'Show', post, method: :get, class: "btn btn-primary btn-sm" %></li>
+                  <li><%= button_to 'Edit', edit_post_path(post), method: :get, class: "btn btn-success btn-sm" %></li>
+                  <li><%= button_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm" %></li> -->
+                </ul>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <hr>
+      <%= button_to "Back", posts_path, class: "btn btn-secondary btn-block", style: "margin-bottom:20px;" %>
+    </div>
+  </div>
+</div>

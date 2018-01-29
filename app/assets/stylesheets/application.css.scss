@@ -1,0 +1,328 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+// @import "bootstrap-sprockets";
+@import "bootstrap";
+@import "font-awesome";
+
+$white-color: #fff;
+/* common settings ============================= */
+html, body, header {
+  margin: 0 auto;
+  // padding: 0 auto;
+  width:100%;
+  // height:100%;
+}
+
+body {
+  // padding-top: 50px
+
+}
+
+ul, li {
+  list-style:none;
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none !important;
+
+  &:hover {
+    background-color: white;
+  }
+}
+
+.form-group {
+  margin-top: 20px;
+
+  h2 {
+    text-align: center;
+  }
+  p {
+    font-family: sans-serif;
+  }
+}
+
+/* navbar ============================= */
+.navbar {
+  background-color: #025AA5;
+
+  .navbar-brand {
+    color: $white-color;
+  }
+
+  .nav-link {
+    color: white;
+    background-color: #025AA5;
+  }
+
+  .nav {
+
+    & li a {
+      color: $white-color;
+    }
+  }
+
+  .btn-header {
+    // border: 1px solid white;
+    font-family: fantasy;
+    // color: white;
+    // background-color: #025AA5;
+    color: #025AA5;
+    background-color: white;
+    margin-right: 10px;
+
+    &:hover {
+      // border: 1px solid white;
+      color: white;
+      background-color: #025AA5;
+      text-decoration: none;
+    }
+  }
+}
+
+/* top ================================ */
+.top-main {
+  padding: 200px 0;
+  text-align: center;
+  // position: absolute;
+  top: 0;
+  width: 100%;
+  height: auto;
+  min-height: 100%;
+  color: white;
+  // background-color: #3ecdc6;
+  background-repeat: no-repeat;
+  background-position: center 50%;
+  background-size: cover;
+  background-image: url("/apple-iphone-desk-office.jpg");
+
+  h2 {
+    font-size: 70px;
+    font-weight: 500;
+    font-family: 'Roboto Condensed', sans-serif;
+    line-height: 1.3;
+    -webkit-font-smoothing: antialiased;
+    margin-bottom: 20px;
+  }
+
+  p {
+    font-size: 24px;
+  }
+}
+
+.top-message {
+  position: relative;
+}
+
+// .item img {
+//   background:url("/apple-iphone-desk-office.jpg") no-repeat center center;
+//   background-size:100% auto;
+// }
+
+// @media(max-width:800px){
+//   .item img {
+//     background-size:800px 300px;
+//     min-height: 300px;
+//   }
+// }
+
+/* contact ================================ */
+.contact-image {
+  padding: 200px 0;
+  text-align: center;
+  // position: absolute;
+  top: 0;
+  width: 100%;
+  height: auto;
+  min-height: 80%;
+  color: white;
+  // background-color: #3ecdc6;
+  background-repeat: no-repeat;
+  background-position: center 50%;
+  background-size: cover;
+  background-image: url("/varanasi.jpg");
+
+  h2 {
+    font-size: 70px;
+    font-weight: 500;
+    font-family: 'Roboto Condensed', sans-serif;
+    line-height: 1.3;
+    -webkit-font-smoothing: antialiased;
+    margin-bottom: 20px;
+  }
+
+  p {
+    font-size: 24px;
+  }
+}
+
+.top-message {
+  position: relative;
+}
+
+/* posts/index ================================ */
+.users-post {
+  cursor: pointer;
+  &:hover {
+    background-color: #e6ecf0;
+  }
+}
+
+.post-link {
+  i {
+    cursor: pointer;
+    padding-right: 10px;
+  }
+
+  li {
+    float: left;
+    margin-left: 5px;
+  }
+
+  a:hover {
+    background-color: #eee;
+  }
+}
+
+.post-new {
+  font-size: 20px;
+  padding: 10px;
+  min-height: 140px;
+  border: 1px solid rgb(216, 218, 223);
+  resize: none;
+}
+
+.map-wrapper {
+  // max-width: 100%;
+  // padding-bottom: 75%;
+  // position: relative;
+  // top: 0;
+  // left: 0;
+  // height: 0;
+  // overflow: hidden;
+
+  // #map-canvas {
+  //   position: absolute;
+  //   width: 50%;
+  //   height: 80%;
+  //   min-width: 200px;
+  //   min-height: 200px;
+  //   overflow: hidden;
+  // }
+}
+
+.like-btn {
+  color: #8899a6;
+}
+
+.like-btn-unlike {
+  color: #ff2581;
+}
+
+.buttons {
+  text-align: center;
+
+  h2 {
+    // text-align: center;
+  }
+
+   ul {
+     margin: 0 auto;
+    display: -webkit-inline-flex;
+
+    li {
+      float:left;
+      margin-right: 10px;
+    }
+  }
+}
+
+.btn-facebook {
+  color: white;
+  background-color: #3b5998;
+}
+
+.btn-twitter {
+  color: white;
+  background-color: #00aced;
+}
+
+.btn-google {
+  color: white;
+  background-color: #dd4b39;
+}
+
+/* post ================================ */
+.upload {
+  label {
+    font-size: 15px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+  .image-upload {
+    display: none;
+  }
+}
+
+/* footer ================================ */
+footer {
+  background-color:black;
+  text-align:center;
+
+  a {
+    color: #666;
+    background-color: black;
+    text-decoration: none;
+
+    &:hover {
+      background-color: black;
+    }
+  }
+
+  span {
+    margin-right: 10px;
+  }
+
+  .footer-top {
+    padding-top: 20px;
+  }
+
+  .footer-middle {
+    margin-top: 10px;
+    font-size: 20px;
+  }
+
+  .footer-bottom {
+    padding: 10px 0;
+    text-align: center;
+  }
+}
+
+/* flash ================================ */
+.flash {
+  padding: 10px 0;
+  color: white;
+  background: rgb(251, 170, 88);
+  text-align: center;
+  // position: absolute;
+  // top: 64px;
+  z-index: 10;
+  width: 100%;
+  border-radius: 0 0 2px 2px;
+  font-size: 14px;
+}

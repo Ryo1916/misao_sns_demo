@@ -1,0 +1,105 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 col-sm-12">
+
+      <div class="form-group">
+        <h2>Create Your Account</h2>
+        <div class="buttons" style="margin-top: 20px;">
+          <ul>
+            <li>
+              <div class="btn btn-default btn-facebook">
+                <span class="fa fa-facebook"></span>
+                Facebook
+              </div>
+            </li>
+            <li>
+              <div class="btn btn-default btn-twitter">
+                <span class="fa fa-twitter"></span>
+                Twitter
+              </div>
+              <!-- <%- if devise_mapping.omniauthable? %>
+                <%- resource_class.omniauth_providers.each do |provider| %>
+                  <%= link_to " #{OmniAuth::Utils.camelize(provider)}",
+                      omniauth_authorize_path(resource_name, provider),
+                      class: "fa fa-twitter btn btn-default btn-twitter", style: "color:white;" %><br />
+                <% end -%>
+              <% end -%> -->
+            </li>
+            <li>
+              <div class="btn btn-default btn-google">
+                <span class="fa fa-google"></span>
+                Google
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <hr>
+
+        <%= form_for(:user,
+            url: registration_path(:user),
+            multipart: true,
+            html: { class: "signup" }) do |f| %>
+        <%= devise_error_messages! %>
+          <div class="field">
+            <%= f.label :name %><br />
+            <%= f.text_field :name, autofocus: true, autocomplete: "name", placeholder: "Enter your name", class: "form-control" %>
+            <p id="name-error" style="color:red; display:none"></p>
+          </div>
+
+          <div class="field">
+            <%= f.label :email %><br />
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Enter your email",class: "form-control" %>
+            <p id="email-error" style="color:red; display:none"></p>
+          </div>
+
+          <div class="field">
+            <%= f.label :password %>
+            <% if @minimum_password_length %>
+            <em>(<%= @minimum_password_length %> characters minimum)</em>
+            <% end %><br />
+            <%= f.password_field :password, autocomplete: "off", placeholder: "Enter your password",class: "form-control" %>
+            <p id="password-error" style="color:red; display:none"></p>
+          </div>
+
+          <div class="field">
+            <%= f.label :password_confirmation %><br />
+            <%= f.password_field :password_confirmation, autocomplete: "off", placeholder: "Enter your password again", class: "form-control" %>
+            <p id="password-confirmation-error" style="color:red; display:none"></p>
+          </div>
+
+          <div class="upload" style="margin-bottom:20px;">
+            <%= f.label :image_name %><br />
+            <label for="user_image_name">
+              <div class="btn btn-success">Choose your image</div>
+            </label>
+            <%= f.file_field :image_name, id: :user_image_name, class: "image-upload" %>
+
+            <script>
+              $(document).ready(function(){
+                $('#user_image_name').val("");
+                $('#user_image_name').change(function(){
+                  // To display only file name(except file path).
+                  var array = $("#user_image_name").val();
+                  // To use '\' as a split symbol, it should be '\\' because of \ is special symbol.
+                  var image_name = array.split("\\");
+                  $('#display_image_name').html(image_name[2]);
+                });
+              });
+            </script>
+            <span id="display_image_name"></span>
+            <p id="image-error" style="color:red; display:none"></p>
+          </div>
+
+          <div class="actions">
+            <%= f.submit "Create your account", class: "btn btn-primary btn-block" %>
+          </div>
+        <% end %>
+      </div>
+
+      <%= render "devise/shared/links" %>
+
+    </div>
+
+  </div>
+</div>

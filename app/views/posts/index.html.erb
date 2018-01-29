@@ -1,0 +1,157 @@
+<div class="container-fluid" style="background: linear-gradient(#D3D8E8, white);">
+  <div class="row" style="padding-top:20px;">
+    <!-- <p id="notice"><%= notice %></p> -->
+    <div class="col-md-3">
+      <% if user_signed_in? %>
+        <div class="card current-user">
+          <div class="card-body">
+            <%= image_tag(current_user.image_name, width: "100%", height: "300px", style: "border-radius:4px;") %>
+            <i class="fa fa-user"></i> <span><%= current_user.name %></span> <br>
+            <i class="fa fa-envelope"></i> <span><%= current_user.email %></span> <br>
+            <i class="fa fa-link"></i> <br>
+            <i class="fa fa-calendar"></i>
+              <span>
+                <% joined_date = current_user.created_at %>
+                Joined <%= joined_date.strftime(" %b %Y") %>
+              </span> <br>
+            <i class="fa fa-map-marker"></i><br>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="col-md-6">
+      <%= render 'form', post: @post %>
+
+      <% @posts.each do |post| %>
+        <div class="card users-post" style="cursor:pointer;">
+          <div class="row card-body">
+            <div class="col-md-1 user-image" style="float: left;">
+              <%= image_tag(post.user.image_name, width: "50px", height: "50px", style: "border-radius:4px;") %>
+            </div>
+            <div class="col-md-11" style="padding-left:30px;">
+              <div class="post-header">
+                <strong><%= post.user.name %></strong>
+                <% t = post.updated_at %>
+                <span style="font-style:italic;"><%= t.strftime(" %Y %b %d") %></span> <br>
+              </div>
+              <div class="post-content">
+                <%= post.content %> <br>
+                <div class="post-image" style="clear: left;">
+                  <% unless post.image_name.blank? %>
+                    <%= image_tag(post.image_name, width: "100%", height: "100%", style: "margin-top:10px;") %>
+                  <% end %>
+                </div>
+                <div class="post-address">
+                  <% unless post.address.blank? %>
+                  <%= image_tag "http://maps.google.com/maps/api/staticmap?size=450x300&sensor=false&zoom=15&markers=#{post.latitude}%2C#{post.longitude}" %>
+                  <p> Address: <%= post.address %> </p>
+
+                  <div id="map" style="width: 100%; height: 400px;"></div>
+                  <style type="text/css">
+                    #map {
+                      width: 100%;
+                      height: 400px;
+                      margin-left:auto;
+                      margin-right:auto;
+                      text-align:left;
+                      display: none;
+                    }
+                  </style>
+                  <!-- <script>
+                    handler = Gmaps.build('Google');
+                    handler.buildMap({ provider: {}, internal: {id: 'map'}}, function(){
+                      markers = handler.addMarkers(<%= raw @hash.to_json %>);
+                      handler.bounds.extendWith(markers);
+                      handler.fitMapToBounds();
+                    });
+                  </script> -->
+
+                  <!-- <script>
+                    var id = <%= post.id %>
+                    var postedLatitude = <%= post.latitude %>
+                    var postedLongitude = <%= post.longitude %>
+                  </script>
+                    <p class="posted-address" style="display:none;"></p>
+
+                    <style type="text/css">
+                      .posted-map {
+                        width: 100%;
+                        height: 400px;
+                        margin-left:auto;
+                        margin-right:auto;
+                        text-align:left;
+                        display: none;
+                      }
+                    </style>
+                    <div class="posted-map"></div> -->
+                  <% end %>
+                </div>
+              </div>
+
+              <div class="post-link" style="display:block; padding-top:20px;">
+                <% if Like.find_by(user_id: current_user.id, post_id: post.id) %>
+                  <%= link_to("/likes/#{post.id}/destroy", {method: "post"}, remote: true) do %>
+                    <i class="fa fa-heart like-btn-unlike unlike" id="<%= post.id %> ">
+                      <%= Like.where(post_id: post.id).count %>
+                    </i>
+                  <% end %>
+                <% else %>
+                  <%= link_to("/likes/#{post.id}/create", {method: "post"}, remote: true) do %>
+                    <i class="fa fa-heart like-btn like" id="<%= post.id %> ">
+                      <%= Like.where(post_id: post.id).count %>
+                    </i>
+                  <% end %>
+                <% end %>
+
+                <i class="fa fa-comment"></i>
+                <i class="fa fa-share"></i>
+                <% if current_user.id == post.user.id %>
+                <ul style="float:right;">
+                  <li><%= link_to 'Show', post %></li>
+                  <li><%= link_to 'Edit', edit_post_path(post) %></li>
+                  <li><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+                  <!-- <li><%= button_to 'Show', post, method: :get, class: "btn btn-primary btn-sm" %></li>
+                  <li><%= button_to 'Edit', edit_post_path(post), method: :get, class: "btn btn-success btn-sm" %></li>
+                  <li><%= button_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger btn-sm" %></li> -->
+                </ul>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+      <br>
+    </div>
+
+    <div class="col-md-3">
+      <div class="card">
+        <div class="card-body">
+          <i style="padding-left:20px; font-size:20px;">You may also like...</i> <br><br>
+          <% @users.each do |user| %>
+            <% if !user.image_name.blank? %>
+              <%= link_to("/users/#{user.id}") do %>
+              <div class="row" style="margin-bottom:10px;">
+                <ul>
+                  <li style="float:left; margin-right:10px; margin-right:10px;">
+                    <div style="display: inline;">
+                      <%= image_tag(user.image_name, width: "60px", height: "60px", style: "border-radius:4px; display:inline;") %>
+                    </div>
+                  </li>
+                  <li style="float:left; margin-right:10px; margin-right:10px;">
+                    <div style="display: inline;">
+                      <strong><%= user.name %></strong><br>
+                      <span><%= user.email %></span><br>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <% end %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,95 @@
+<footer class="container-fluid">
+  <div class="row footer-top">
+    <div class="col-md-12">
+    <% if !current_user.blank? %>
+      <span><a href="/posts">Home</a></span>
+    <% else %>
+      <span><a href="/">Home</a></span>
+    <% end %>
+      <span><a href="/mains/about">About</a></span>
+      <span><a href="/mains/contact">Contact</a></span>
+    </div>
+  </div>
+
+  <div class="row footer-middle">
+    <div class="col-md-12">
+      <span class="fa fa-facebook"></span>
+      <span class="fa fa-twitter"></span>
+      <span class="fa fa-google"></span>
+      <span class="fa fa-github"></span>
+      <span class="fa fa-linkedin"></span>
+    </div>
+  </div>
+
+  <div class="row footer-bottom">
+    <div class="col-md-12">
+      <span style="text-align:center;">© Copyright <% now = Time.current %> <%= now.year %> SNS App - All Rights Reserved</span>
+    </div>
+  </div>
+</footer>
+
+<!-- <section once="" class="cid-qv5ALL8e7H" id="footer7-3k" data-rv-view="8796">
+  <div class="mbr-overlay" style="opacity: 0.4; background-color: rgb(51, 42, 104);"></div>
+    <div class="container">
+        <div class="media-container-row align-center mbr-white">
+            <div class="row">
+                <ul class="foot-menu">
+
+
+
+
+
+                <li class="foot-menu-item mbr-fonts-style display-7">
+                        <a class="text-white mbr-bold" href="#" target="_blank">About us</a>
+                    </li><li class="foot-menu-item mbr-fonts-style display-7">
+                        <a class="text-white mbr-bold" href="#" target="_blank">Services</a>
+                    </li><li class="foot-menu-item mbr-fonts-style display-7">
+                        <a class="text-white mbr-bold" href="#" target="_blank">Get In Touch</a>
+                    </li><li class="foot-menu-item mbr-fonts-style display-7">
+                        <a class="text-white mbr-bold" href="#" target="_blank">Careers</a>
+                    </li><li class="foot-menu-item mbr-fonts-style display-7">
+                        <a class="text-white mbr-bold" href="#" target="_blank">Work</a>
+                    </li></ul>
+            </div>
+            <div class="row">
+                <div class="social-list align-right pb-2">
+
+
+
+
+
+
+                <div class="soc-item">
+                        <a href="https://twitter.com/mobirise" target="_blank">
+                            <span class="socicon-twitter socicon mbr-iconfont mbr-iconfont-social" media-simple="true"></span>
+                        </a>
+                    </div><div class="soc-item">
+                        <a href="https://www.facebook.com/pages/Mobirise/1616226671953247" target="_blank">
+                            <span class="socicon-facebook socicon mbr-iconfont mbr-iconfont-social" media-simple="true"></span>
+                        </a>
+                    </div><div class="soc-item">
+                        <a href="https://www.youtube.com/c/mobirise" target="_blank">
+                            <span class="socicon-youtube socicon mbr-iconfont mbr-iconfont-social" media-simple="true"></span>
+                        </a>
+                    </div><div class="soc-item">
+                        <a href="https://instagram.com/mobirise" target="_blank">
+                            <span class="socicon-instagram socicon mbr-iconfont mbr-iconfont-social" media-simple="true"></span>
+                        </a>
+                    </div><div class="soc-item">
+                        <a href="https://plus.google.com/u/0/+Mobirise" target="_blank">
+                            <span class="socicon-googleplus socicon mbr-iconfont mbr-iconfont-social" media-simple="true"></span>
+                        </a>
+                    </div><div class="soc-item">
+                        <a href="https://www.behance.net/Mobirise" target="_blank">
+                            <span class="socicon-behance socicon mbr-iconfont mbr-iconfont-social" media-simple="true"></span>
+                        </a>
+                    </div></div>
+            </div>
+            <div class="row row-copirayt">
+                <p class="mbr-text mb-0 mbr-fonts-style mbr-white display-7">
+                    © Copyright 2017 <a href="https://mobirise.com/bootstrap-template/" class="text-white">Free Bootstrap Templates</a> - All Rights Reserved
+                </p>
+            </div>
+        </div>
+    </div>
+</section> -->

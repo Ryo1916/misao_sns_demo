@@ -1,0 +1,68 @@
+<nav class="navbar sticky-top navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" style="text-decoration:none; background-color:#025AA5;" href="/">SNS App</a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon" style="text-decoration:none;">
+        <i class="fa fa-bars" aria-hidden="true" style="color:white;"></i>
+      </span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <% if !current_user.blank? %>
+          <li class="nav-item">
+            <a href="/posts" class="nav-link">Home</a>
+          </li>
+        <% else %>
+          <li class="nav-item">
+            <a href="/" class="nav-link">Home</a>
+          </li>
+        <% end %>
+        <li class="nav-item">
+          <a href="/mains/about" class="nav-link">About</a>
+        </li>
+        <li class="nav-item">
+          <a href="/mains/contact" class="nav-link">Contact</a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav">
+        <% if user_signed_in? %>
+          <li class="nav-item" style="margin-right:10px;">
+            <form class="form-inline">
+              <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-header my-2 my-sm-0" type="submit">Search</button>
+            </form>
+          </li>
+          <li class="nav-item">
+            <%= button_to raw("Hi! #{current_user.name}"),
+                "/users/#{current_user.id}",
+                method: :get,
+                class: "btn navbar-btn btn-default btn-header" %>
+          </li>
+          <li class="nav-item">
+            <%= button_to raw("Logout"),
+                destroy_user_session_path,
+                method: :delete,
+                class: "btn navbar-btn btn-default btn-header" %>
+          </li>
+        <% else %>
+          <li class="nav-item">
+            <%= button_to raw("Create your account"),
+                new_user_registration_path,
+                class:"btn navbar-btn btn-default btn-header",
+                method: :get %>
+          </li>
+          <li class="nav-item">
+            <%= button_to raw("Login"),
+                new_user_session_path,
+                class: "btn navbar-btn btn-default btn-header",
+                method: :get %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+
+  </div>
+</nav>

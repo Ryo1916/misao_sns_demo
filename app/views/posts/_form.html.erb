@@ -1,0 +1,83 @@
+<div class="card" style="margin-bottom:10px;">
+  <div class="card-body">
+    <div class="form-group">
+      <%= form_with(model: post,
+          local: true,
+          multipart: true,
+          class: "post") do |form| %>
+        <% if post.errors.any? %>
+          <div id="error_explanation">
+            <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
+
+            <ul>
+            <% post.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <div class="field">
+          <%= form.text_area :content, id: :post_content, placeholder: "What's on your mind?", class: "post-new, form-control" %>
+          <p id="post-error" style="color:red; display:none; font-family:sans-serif;"></p>
+        </div>
+
+        <%= form.hidden_field :user_id, value: current_user.id %>
+
+        <div class="upload">
+          <label for="post_image_name">
+            <span class="fa fa-camera"></span>
+          </label>
+          <%= form.file_field :image_name, id: :post_image_name, class: "image-upload" %>
+
+          <script>
+            $(document).ready(function(){
+              $('#post_image_name').val("");
+              $('#post_image_name').change(function(){
+                var array = $('#post_image_name').val();
+                var image_name = array.split("\\");
+                $('#display_post_image_name').html(image_name[2]);
+              });
+            });
+          </script>
+          <span id="display_post_image_name"></span>
+
+          <label>
+            <span class="fa fa-film"></span>
+          </label>
+          <!-- <%= form.file_field :movie_name, id: :post_movie_name, class: "input" %> -->
+
+          <label>
+            <span class="fa fa-map-marker" id="location"></span>
+          </label>
+          <%= form.hidden_field :latitude, id: :post_latitude, class: "" %>
+          <%= form.hidden_field :longitude, id: :post_longitude, class: "" %>
+          <%= form.hidden_field :address, id: :post_address, class: "" %>
+        </div>
+
+        <!-- This is to displpay location info. -->
+        <p id="post_address" class="address" style="display:none;"></p>
+        <p id="result" style="display:none;"></p>
+
+        <style type="text/css">
+          #map-canvas {
+            width: 100%;
+            height: 400px;
+            margin-left:auto;
+            margin-right:auto;
+            text-align:left;
+            display: none;
+          }
+        </style>
+        <div class="map-wrapper" style="margin-bottom:20px;">
+          <div id="map-canvas"></div>
+        </div>
+
+        <div class="actions">
+          <%= form.submit class: "btn btn-success btn-block" %>
+        </div>
+      <% end %>
+    </div>
+
+  </div>
+</div>
