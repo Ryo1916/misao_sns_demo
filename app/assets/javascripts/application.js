@@ -157,6 +157,48 @@ $(document).ready(function(){
     }
   });
 
+  $(".change-password").submit(function(){
+    var password = $("#user_password").val();
+    var password_confirmation = $("#user_password_confirmation").val();
+
+    if (password == "") {
+      $('#password-error').text("* Please enter the password.");
+      $('#password-error').show();
+      passwordFlag = 1;
+    } else if ( !passwordcheck.test(password) ){
+      $('#password-error').text("* Password should be 1 digit, 1 lowercase, 1 uppercase and 1 special symbol");
+      $('#password-error').show();
+      passwordFlag = 1;
+    } else {
+      $('#password-error').hide();
+      passwordFlag = 0;
+    }
+
+    if (password_confirmation == "") {
+      $('#password-confirmation-error').text("* Please enter your password again.");
+      $('#password-confirmation-error').show();
+      passwordConfirmFlag = 1;
+    } else if (password_confirmation != password) {
+      $('#password-confirmation-error').text("* Please enter the same password.");
+      $('#password-confirmation-error').show();
+      passwordConfirmFlag = 1;
+    } else {
+      $('#password-confirmation-error').hide();
+      passwordFlag = 0;
+    }
+
+    if (passwordFlag == 1 || passwordConfirmFlag == 1) {
+      passwordFlag = 0;
+      passwordConfirmFlag = 0;
+      return false;
+    } else {
+      passwordFlag = 0;
+      passwordConfirmFlag = 0;
+      return true;
+    }
+
+  });
+
   $(".post").submit(function(){
     var post = $("#post_content").val();
     var image = $("#post_image_name").val();
@@ -209,7 +251,7 @@ $(document).ready(function(){
 
           let promise = new Promise((resolve, reject) => { // #1
             console.log('#1')
-            alert("before geocoder func: "+address);
+            // alert("before geocoder func: "+address);
             geocoder(lat, lng);
             resolve(address)
           })
@@ -218,7 +260,7 @@ $(document).ready(function(){
             return new Promise((resolve, reject) => {
               setTimeout(() => {
                 console.log('#2')
-                googleMap(lat, lng, address);
+                initMap(lat, lng, address);
                 resolve(address)
               }, 500)
             })
@@ -228,8 +270,8 @@ $(document).ready(function(){
 
           // alert("before geocoder func: "+address);
           // geocoder(lat, lng);
-          // alert("before googlemap func: "+address);
-          // googleMap(lat, lng, address);
+          // alert("before initMap func: "+address);
+          // initMap(lat, lng, address);
         },
 
         // [Argument No.2] When getting location info failed, it'll be used.
@@ -252,7 +294,7 @@ $(document).ready(function(){
           var errorMessage = "[Error No." + errorNo + "]\n" + errorInfo[ errorNo ];
 
           // Display alert
-          alert(errorMessage) ;
+          alert(errorMessage);
 
           // Display as HTML
           document.getElementById( 'result' ).innerHTML = errorMessage;
@@ -277,9 +319,9 @@ $(document).ready(function(){
   $('.posted').click(function(){
     var postedAddress = "";
     var geocoder = new google.maps.Geocoder();
-    alert(id);
-    alert(postedLatitude);
-    alert(postedLongitude);
+    // alert(id);
+    // alert(postedLatitude);
+    // alert(postedLongitude);
 
     // Display google map
     var map = new google.maps.Map(document.getElementById('posted-map') , {
@@ -315,35 +357,58 @@ $(document).ready(function(){
   });
 
   // $('.like').click(function(){
-  //   var id = $(this).attr("id");
+  //   var current = $(this);
+  //   var id = $(current).attr("id");
+  //   var uid = $('#u-id').text();
+  //   var count = $(current).find("#count").text();
+  //   count = parseInt(count);
   //   alert(id);
   //   $.ajax({
-  //     url: "/likes/create",
+  //     url: "/likes",
   //     type: "POST",
   //     dataType: "JSON",
-  //     data: { like: { post_id: id } },
+  //     data: { like: { user_id: uid, post_id: id } },
   //     error:function(error){
   //       console.log(error);
   //     },
   //     success:function(data){
+  //       if (data.status === "success") {
+  //         alert("ok");
+  //         count = count +1;
+  //         alert(count);
+  //         $(current).find('#count').text(count);
+  //         $('.unlike').show();
+  //         $('.like').hide();
+  //       }
   //       console.log(data);
-  //       $('.unlike').hide();
-  //       $('.like').show();
+  //
   //     }
   //   });
   // });
   //
   // $('.unlike').click(function(){
-  //   var id = $(this).attr("id");
+  //   var current = $(this);
+  //   var id = $(current).attr("id");
+  //   var uid = $('#u-id').text();
+  //   // var uid = $('#u-id').text();
+  //   var count = $(current).find("#count").text();
+  //   count = parseInt(count);
+  //   alert(id);
   //   $.ajax({
   //     url: "/likes/destroy",
-  //     type: "POST",
+  //     type: "delete",
   //     dataType: "JSON",
-  //     data: { like: { post_id: id } },
+  //     data: { like: { user_id: uid,  post_id: id } },
   //     error:function(error){
   //       console.log(error);
   //     },
   //     success:function(data){
+  //       if (data.status === "success") {
+  //         alert("ok");
+  //         count = count - 1;
+  //         alert(count);
+  //         $(current).find('#count').text(count);
+  //       }
   //       console.log(data);
   //       $('.like').hide();
   //       $('.unlike').show();
@@ -368,13 +433,13 @@ $(document).ready(function(){
           $('.address').html('Address: ' + address);
           $('.address').show();
 
-          alert("in geocoder func"+address);
+          // alert("in geocoder func"+address);
         }
       }
     });
   }
 
-  function googleMap(lat, lng, address) {
+  function initMap(lat, lng, address) {
     // Display google map
     var map = new google.maps.Map(document.getElementById('map-canvas') , {
       // Center Coordinate [latlng]

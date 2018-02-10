@@ -1,0 +1,53 @@
+<% provide(:title, @title) %>
+<div class="container-fluid" style="background: linear-gradient(#D3D8E8, white);">
+  <div class="row" style="margin-bottom:20px; padding-top:20px;">
+    <aside class="col-md-4">
+      <div class="card current-user">
+        <div class="card-body">
+          <section class="user_info">
+            <table>
+              <tr>
+                <td>
+                  <%= image_tag(@user.image_name, width: "100px", height: "100px", style: "border-radius:4px;") %>
+                </td>
+                <td>
+                  <h3 style="display:inline-block;"><%= @user.name %></h3>
+                  <span><%= link_to "view my profile", @user %></span>
+                  <span><b>Posts:</b> <%= @user.posts.count %></span>
+                </td>
+              </tr>
+            </table>
+          </section>
+          <section class="stats">
+            <%= render 'shared/stats' %>
+            <% if @users.any? %>
+            <div class="user_avatars">
+              <% @users.each do |user| %>
+              <%= link_to image_tag(user.image_name, size: 30), user %>
+              <% end %>
+            </div>
+            <% end %>
+          </section>
+        </div>
+      </div>
+    </aside>
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-body">
+          <h3><%= @title %></h3>
+          <% if @users.any? %>
+          <ul class="users follow">
+            <%= render @users %>
+          </ul>
+          <%= will_paginate %>
+          <% else %>
+            <div style="text-align:center;">
+              <p style="opacity:0.4; font-size:30px;">There's no follower.</p>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

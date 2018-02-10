@@ -1,14 +1,18 @@
 class PostsController < ApplicationController
   before_action :set_post, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
-  # skip_before_action :forbid_login_user
+  before_action :set_auth
 
   # GET /posts
   # GET /posts.json
   def index
     @post = Post.new
-    @posts = Post.all.order(id: :desc)
     @users = User.all
+    @posts = if params[:search]
+      Post.where('content LIKE ?', "%#{params[:search]}%").order(id: :desc)
+    else
+      Post.all.order(id: :desc)
+    end
 
     # @posts.each do |f|
     #   @hash = Gmaps4rails.build_markers(f) do |post, marker|
@@ -17,25 +21,16 @@ class PostsController < ApplicationController
     #     marker.infowindow post.address
     #   end
     # end
-
-    # @posts.each do |post|
-    #   @likes_count = Like.where(post_id: post.id).count
-    # end
   end
 
   # GET /posts/1
   # GET /posts/1.json
   def show
-    @post = Post.find(params[:id])
     # @hash = Gmaps4rails.build_markers(@post) do |post, marker|
     #   marker.lat post.latitude
     #   marker.lng post.longitude
     #   marker.infowindow post.address
     # end
-    if current_user.id != @post.user_id
-      # flash[:notice] = "You cannot access this page."
-      redirect_to posts_path
-    end
   end
 
   # GET /posts/new
@@ -45,10 +40,9 @@ class PostsController < ApplicationController
 
   # GET /posts/1/edit
   def edit
-    @post = Post.find(params[:id])
     if current_user.id != @post.user_id
       # flash[:notice] = "You cannot access this page."
-      redirect_to posts_path
+      redirect_to post_path
     end
   end
 
@@ -60,7 +54,7 @@ class PostsController < ApplicationController
     respond_to do |format|
       if @post.save
         format.html { redirect_to posts_path, notice: 'Post was successfully created.' }
-        # format.json { render :show, status: :created, location: @post }
+        format.json { render :index, status: :created, location: @post }
       else
         format.html { render :index }
         format.json { render json: @post.errors, status: :unprocessable_entity }
@@ -100,6 +94,10 @@ class PostsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
-      params.require(:post).permit(:content, :image_name, :user_id, :latitude, :longitude, :address)
+      params.require(:post).permit(:content, :image_name, :user_id, :latitude, :longitude, :address, :likes_count)
+    end
+
+    def set_auth
+      @auth = session[:omniauth] if session[:omniauth]
     end
 end

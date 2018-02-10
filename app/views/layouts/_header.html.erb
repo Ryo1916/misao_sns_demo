@@ -14,6 +14,9 @@
           <li class="nav-item">
             <a href="/posts" class="nav-link">Home</a>
           </li>
+          <li class="nav-item">
+            <a href="/users" class="nav-link">Users</a>
+          </li>
         <% else %>
           <li class="nav-item">
             <a href="/" class="nav-link">Home</a>
@@ -27,13 +30,21 @@
         </li>
       </ul>
 
-      <ul class="navbar-nav">
+      <ul class="navbar-nav navbar-right">
         <% if user_signed_in? %>
           <li class="nav-item" style="margin-right:10px;">
-            <form class="form-inline">
-              <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-header my-2 my-sm-0" type="submit">Search</button>
-            </form>
+            <% if current_page?(posts_path) %>
+              <%= form_tag(posts_path, method: :get, class: "form-inline") do %>
+                <%= text_field_tag :search, '', class: "form-control mr-sm-2", placeholder: "Search" %>
+                <%= submit_tag 'Search', name: nil, class: "btn btn-header my-2 my-sm-0" %>
+              <% end %>
+            <% elsif current_page?(users_path) %>
+              <%= form_tag(users_path, method: :get, class: "form-inline") do %>
+                <%= text_field_tag :search, '', class: "form-control mr-sm-2", placeholder: "Search" %>
+                <%= submit_tag 'Search', name: nil, class: "btn btn-header my-2 my-sm-0" %>
+              <% end %>
+            <% else %>
+            <% end %>
           </li>
           <li class="nav-item">
             <%= button_to raw("Hi! #{current_user.name}"),
@@ -60,6 +71,15 @@
                 class: "btn navbar-btn btn-default btn-header",
                 method: :get %>
           </li>
+        <% end %>
+      </ul>
+      <ul class="d-block d-md-none">
+        <% if user_signed_in? %>
+          <li class="nav-item"> User </li>
+          <li class="nav-item"> Logout </li>
+        <% else %>
+          <li class="nav-item">Create your account</li>
+          <li class="nav-item">Login</li>
         <% end %>
       </ul>
     </div>

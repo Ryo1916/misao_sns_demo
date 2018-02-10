@@ -1,0 +1,18 @@
+<div id="link_form_<%= post.id %>" style="display:inline;">
+  <% if user_signed_in? %>
+    <% if post.like_user(current_user.id) %>
+      <%= render 'likes/unlike', post: post %>
+    <% else %>
+      <%= render partial: 'likes/like', locals: { post: post }  %>
+    <% end %>
+    <span id="like-count-<%= post.id %>">
+      <%= post.likes_count %>
+    </span>
+  <% else %>
+    <!-- This is for unsigned in users -->
+    Like
+      <span>
+        <%= post.likes_count %>
+      </span>
+  <% end %>
+</div>

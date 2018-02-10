@@ -1,35 +1,34 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-12 col-sm-12">
+    <div class="col-md-6 offset-md-3">
 
       <div class="form-group">
         <h2>Create Your Account</h2>
         <div class="buttons" style="margin-top: 20px;">
           <ul>
             <li>
-              <div class="btn btn-default btn-facebook">
-                <span class="fa fa-facebook"></span>
-                Facebook
-              </div>
+              <%= link_to user_facebook_omniauth_authorize_path do %>
+                <div class="btn btn-default btn-facebook">
+                  <span class="fa fa-facebook"></span>
+                  Facebook
+                </div>
+              <% end %>
             </li>
             <li>
-              <div class="btn btn-default btn-twitter">
-                <span class="fa fa-twitter"></span>
-                Twitter
-              </div>
-              <!-- <%- if devise_mapping.omniauthable? %>
-                <%- resource_class.omniauth_providers.each do |provider| %>
-                  <%= link_to " #{OmniAuth::Utils.camelize(provider)}",
-                      omniauth_authorize_path(resource_name, provider),
-                      class: "fa fa-twitter btn btn-default btn-twitter", style: "color:white;" %><br />
-                <% end -%>
-              <% end -%> -->
+              <%= link_to user_twitter_omniauth_authorize_path do %>
+                <div class="btn btn-default btn-twitter">
+                  <span class="fa fa-twitter"></span>
+                  Twitter
+                </div>
+              <% end %>
             </li>
             <li>
-              <div class="btn btn-default btn-google">
-                <span class="fa fa-google"></span>
-                Google
-              </div>
+              <%= link_to user_google_oauth2_omniauth_authorize_path do %>
+                <div class="btn btn-default btn-google">
+                  <span class="fa fa-google"></span>
+                  Google
+                </div>
+              <% end %>
             </li>
           </ul>
         </div>
@@ -43,13 +42,13 @@
         <%= devise_error_messages! %>
           <div class="field">
             <%= f.label :name %><br />
-            <%= f.text_field :name, autofocus: true, autocomplete: "name", placeholder: "Enter your name", class: "form-control" %>
+            <%= f.text_field :name, autofocus: true, placeholder: "Enter your name", class: "form-control" %>
             <p id="name-error" style="color:red; display:none"></p>
           </div>
 
           <div class="field">
             <%= f.label :email %><br />
-            <%= f.email_field :email, autofocus: true, autocomplete: "email", placeholder: "Enter your email",class: "form-control" %>
+            <%= f.email_field :email, placeholder: "Enter your email",class: "form-control" %>
             <p id="email-error" style="color:red; display:none"></p>
           </div>
 
@@ -68,12 +67,27 @@
             <p id="password-confirmation-error" style="color:red; display:none"></p>
           </div>
 
+          <div class="field">
+            <%= f.label :date_of_birth %><br />
+            <%= f.date_select :date_of_birth, { :include_blank => true, :start_year => 1900 }, { class: "form-control bootstrap-date" } %>
+          </div>
+
+          <div class="field">
+            <%= f.label :address %><br />
+            <%= f.text_field :address, placeholder: "Enter your address",class: "form-control" %>
+          </div>
+
+          <div class="field">
+            <%= f.label :blog %><br />
+            <%= f.text_field :blog, placeholder: "Enter your blog address if you have",class: "form-control" %>
+          </div>
+
           <div class="upload" style="margin-bottom:20px;">
             <%= f.label :image_name %><br />
             <label for="user_image_name">
               <div class="btn btn-success">Choose your image</div>
             </label>
-            <%= f.file_field :image_name, id: :user_image_name, class: "image-upload" %>
+            <%= f.file_field :image_name, accept: 'image/jpeg,image/gif,image/png', id: :user_image_name, class: "image-upload" %>
 
             <script>
               $(document).ready(function(){
@@ -84,6 +98,13 @@
                   // To use '\' as a split symbol, it should be '\\' because of \ is special symbol.
                   var image_name = array.split("\\");
                   $('#display_image_name').html(image_name[2]);
+                });
+
+                $('signup').bind('change', function(){
+                  var size_in_megabytes = this.files[0].size/1024/1024;
+                  if (size_in_megabytes > 5) {
+                    alert('Maximum file size is 5MB. Please choose a smaller file.');
+                  }
                 });
               });
             </script>

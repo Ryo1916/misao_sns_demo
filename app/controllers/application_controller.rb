@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+# Add security token to all generated form by rails and ajax request
   protect_from_forgery with: :exception
 
   before_action :configure_permitted_parameters, if: :devise_controller?
@@ -30,7 +31,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def configure_permitted_parameters
-    added_attrs = [:name, :image_name]
+    added_attrs = [:name, :date_of_birth, :address, :blog, :image_name]
     devise_parameter_sanitizer.permit :sign_up, keys: added_attrs
     devise_parameter_sanitizer.permit :account_update, keys: added_attrs
   end
@@ -47,4 +48,5 @@ class ApplicationController < ActionController::Base
   #   devise_parameter_sanitizer.for(:sign_in) { |u| u.permit(:login, :username, :email, :password, :remember_me) }
   #   devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:username, :email, :password, :password_confirmation, :current_password) }
   # end
+
 end

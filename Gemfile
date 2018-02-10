@@ -20,6 +20,9 @@ gem 'uglifier', '>= 1.3.0'
 # gem 'therubyracer', platforms: :ruby
 # Use haml statement
 gem 'haml'
+# Use paginate in Rails
+gem 'will_paginate'
+# gem 'bootstrap-will_paginate'
 
 # Use bootstrap
 gem 'bootstrap'

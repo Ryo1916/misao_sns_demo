@@ -1,0 +1,25 @@
+<li style="margin-top:20px;">
+  <table>
+    <tr>
+      <td><%= image_tag(user.image_name, size: 50) %></td>
+      <td style="width:150px;">  <%= link_to user.name, user %></td>
+      <td>
+        <a href="<%= following_user_path(user) %>">
+          <strong>
+            <%= user.following.count %>
+          </strong>
+          following
+        </a>
+      </td>
+      <td>
+        <a href="<%= followers_user_path(user) %>">
+          <strong>
+            <%= user.followers.count %>
+          </strong>
+          followers
+        </a>
+      </td>
+    </tr>
+  </table>
+</li>
+<hr>

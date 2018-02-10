@@ -1,0 +1,5 @@
+alert("follow");
+$('#follow_form').html("<%= escape_javascript(render('users/unfollow')) %>");
+$('#followers').html("<%= @user.followers.count %>");
+// escape_javascript method:
+// to escape executed result(do not display the result) when embed html in javascript file.

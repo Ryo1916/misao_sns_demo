@@ -1,6 +1,10 @@
-<h1>Editing Post</h1>
-
-<%= render 'form', post: @post %>
-
-<%= link_to 'Show', @post %> |
-<%= link_to 'Back', posts_path %>
+<div class="container-fluid" style="background: linear-gradient(#D3D8E8, white);">
+  <div class="row" style="padding-top:20px;">
+    <div class="col-md-6 offset-md-3">
+      <h2>Editing Post</h2>
+      <%= render 'form', post: @post %>
+      <%= link_to 'Show', @post, class: "btn btn-primary btn-block", style: "color:white;" %>
+      <%= link_to 'Back to Home', posts_path, class: "btn btn-secondary btn-block", style: "color:white;" %>
+    </div>
+  </div>
+</div>
