@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180227122507) do
+ActiveRecord::Schema.define(version: 20180309143425) do
 
   create_table "comments", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.text "text"
@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(version: 20180227122507) do
     t.float "longitude", limit: 24
     t.string "address"
     t.integer "likes_count"
+    t.integer "shares_count"
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
@@ -53,6 +54,15 @@ ActiveRecord::Schema.define(version: 20180227122507) do
     t.index ["followed_id"], name: "index_relationships_on_followed_id"
     t.index ["follower_id", "followed_id"], name: "index_relationships_on_follower_id_and_followed_id", unique: true
     t.index ["follower_id"], name: "index_relationships_on_follower_id"
+  end
+
+  create_table "shares", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint "user_id"
+    t.bigint "post_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_shares_on_post_id"
+    t.index ["user_id"], name: "index_shares_on_user_id"
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
@@ -96,4 +106,6 @@ ActiveRecord::Schema.define(version: 20180227122507) do
   add_foreign_key "likes", "posts"
   add_foreign_key "likes", "users"
   add_foreign_key "posts", "users"
+  add_foreign_key "shares", "posts"
+  add_foreign_key "shares", "users"
 end

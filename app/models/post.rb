@@ -7,6 +7,8 @@ class Post < ApplicationRecord
   has_many :likes, dependent: :destroy
   has_many :liking_users, through: :likes, source: :user
   has_many :comments, dependent: :destroy
+  has_many :shares, dependent: :destroy
+  has_many :sharing_users, through: :shares, source: :user
 
 # Validations for post.
   validates :content, { presence: true, length: { maximum: 1000 } }
@@ -25,9 +27,14 @@ class Post < ApplicationRecord
     liking_users.include?(user)
   end
 
-# This is the same method that the above method
+# This is the same method that the like? method
   def like_user(user_id)
     likes.find_by(user_id: user_id)
+  end
+
+# To check user already shared or not.
+  def share_user(user_id)
+    self.shares.find_by(user_id: user_id)
   end
 
   # def picture_size

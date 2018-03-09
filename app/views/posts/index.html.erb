@@ -131,15 +131,37 @@
                     });
                   </script>
                 <!-- Share button -->
-                  <i class="fa fa-share"></i>
-                  <% if current_user.id == post.user.id %>
-                    <ul style="float:right;">
-                      <li><%= link_to 'Show', post %></li>
-                      <li><%= link_to 'Edit', edit_post_path(post) %></li>
-                      <li><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></li>
-                    </ul>
+                  <% if post.share_user(current_user) %>
+                    <%= link_to share_path(id: Share.find_by(user_id: current_user.id), post_id: post.id), method: :delete do %>
+                      <i class="fa fa-share"></i>
+                    <% end %>
+                  <% else %>
+                    <%= link_to shares_path(post_id: post.id), method: :post do %>
+                      <i class="fa fa-share"></i>
+                    <% end %>
                   <% end %>
+                  <%= post.shares_count %>
+                <!-- post edit links -->
+                <% if current_user.id == post.user.id %>
+                  <ul style="float:right;">
+                    <li><%= link_to 'Show', post %></li>
+                    <li><%= link_to 'Edit', edit_post_path(post) %></li>
+                    <li><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+                  </ul>
+                <% end %>
               </div>
+
+              <% if post.shares_count != 0 and post.shares_count != nil %>
+                <div class="shared-users">
+                  <% shares = Share.where(post_id: post.id).order(updated_at: :desc) %>
+                  <% shares.each do |share| %>
+                    <%= link_to share.user do %>
+                      <i><%= share.user.name %></i>
+                    <% end %>
+                  <% end %>
+                  shared this post.
+                </div>
+              <% end %>
             </div>
           </div>
 

@@ -18,26 +18,16 @@ Rails.application.routes.draw do
     end
   end
 
-  # resources :likes do
-  #   get '/likes/new', to: 'likes#new'
-  #   post '/likes', to: 'likes#create'
-  #   delete '/likes/destroy', to: 'likes#destroy'
-  # end
-
 # for posts and likes
   resources :posts do
     resources :likes, only: [:create, :destroy]
   end
 
-  # post '/like/:post_id' => 'likes#like', as: 'like'
-  # delete '/like/:post_id' => 'likes#unlike', as: 'unlike'
-  # resources :likes, only: [:create, :destroy]
-
-  # post "likes/:post_id/create" => "likes#create"
-  # post "likes/:post_id/destroy" => "likes#destroy"
-
 # for comments
-  resources :comments, :only => [:edit, :create, :update, :destroy]
+  resources :comments, only: [:edit, :create, :update, :destroy]
+
+# for shares
+  resources :shares, only: [:create, :destroy]
 
 # for relationships
   resources :relationships, only: [:create, :destroy]
