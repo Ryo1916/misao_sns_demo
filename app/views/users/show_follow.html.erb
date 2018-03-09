@@ -11,8 +11,8 @@
                   <%= image_tag(@user.image_name, width: "100px", height: "100px", style: "border-radius:4px;") %>
                 </td>
                 <td>
-                  <h3 style="display:inline-block;"><%= @user.name %></h3>
-                  <span><%= link_to "view my profile", @user %></span>
+                  <h3><%= @user.name %></h3>
+                  <span><%= link_to "View Profile", @user %></span>
                   <span><b>Posts:</b> <%= @user.posts.count %></span>
                 </td>
               </tr>

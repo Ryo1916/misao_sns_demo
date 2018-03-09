@@ -36,6 +36,10 @@ Rails.application.routes.draw do
   # post "likes/:post_id/create" => "likes#create"
   # post "likes/:post_id/destroy" => "likes#destroy"
 
+# for comments
+  resources :comments, :only => [:edit, :create, :update, :destroy]
+
+# for relationships
   resources :relationships, only: [:create, :destroy]
 
 # for catch mail in the local

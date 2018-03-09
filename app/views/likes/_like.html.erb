@@ -4,3 +4,6 @@
             remote: true do %>
   <i class="fa fa-heart like-btn like"></i>
 <% end %>
+<span id="like-count-<%= post.id %>">
+  <%= post.likes_count %>
+</span>

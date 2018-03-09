@@ -10,7 +10,7 @@ class User < ApplicationRecord
   has_many :posts, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :like_posts, through: :likes, source: :post
-  # has_many :messages, dependent: :destroy
+  has_many :comments, dependent: :destroy
     # Rails recognized automatically relational table by foreign_key(ex: user_id, post_id).
     # But now we want to use follower_id as a foreign_key and rails cannot understand this is it or not.
     # So we have to write the following lines to use follower_id as a foreign_key.

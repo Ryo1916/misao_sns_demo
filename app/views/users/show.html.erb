@@ -1,5 +1,7 @@
 <div class="container-fluid" style="background: linear-gradient(#D3D8E8, white);">
   <div class="row" style="margin-bottom:20px; padding-top:20px;">
+
+    <!-- Display user info -->
     <div class="col-md-4">
       <div class="card current-user">
         <div class="card-body">
@@ -34,40 +36,51 @@
               <td><span><%= @user.address %></span></td>
             </tr>
           </table>
-          <%= image_tag "http://maps.google.com/maps/api/staticmap?size=370x300&sensor=false&zoom=15&markers=#{@user.latitude}%2C#{@user.longitude}" %>
-          <!-- <i class="fa fa-user"></i> <span><%= @user.name %></span> <br>
-          <i class="fa fa-envelope"></i> <span><%= @user.email %></span> <br>
-          <i class="fa fa-link"></i> <span><%= link_to("Your spot", @user.blog) %></span> <br>
-          <i class="fa fa-calendar"></i>
-            <span>
-              <% joined_date = @user.created_at %>
-              Joined <%= joined_date.strftime(" %b %Y") %>
-            </span> <br>
-          <i class="fa fa-map-marker"></i> <span><%= @user.address %></span> <br> -->
 
-          <script type="text/javascript">
-            function initMap() {
-              var lat = <%= @user.latitude %>;
-              var lng = <%= @user.longitude %>;
-              alert(lat);
-              alert(lng);
-              var latlng = {lat: <%= @user.latitude %>, lng: <%= @user.longitude %> };
-              var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 15,
-                center: latlng
-              });
-              var marker = new google.maps.Marker({
-                position: latlng,
-                map: map
-              });
-            }
-          </script>
-          <!-- <script async defer
-            src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyCtEA9jYRWka4cmSQ-XkZS9u02UWMWgSsI&callback=initMap">
-          </script> -->
-          <div class="map-wrapper" style="margin-bottom:20px;">
-            <div id="map"></div>
-          </div>
+            <script type="text/javascript">
+              function initMap() {
+                var userId = <%= @user.id %>;
+                var lat = <%= @user.latitude %>;
+                var lng = <%= @user.longitude %>;
+
+                var map = new google.maps.Map(document.getElementById('map'+userId), {
+                  zoom: 15,
+                  center: {
+                    lat: lat,
+                    lng: lng
+                  }
+                });
+
+                var transitLayer = new google.maps.TransitLayer();
+                transitLayer.setMap(map);
+
+                var marker = new google.maps.Marker({
+                  position: {
+                    lat: lat,
+                    lng: lng
+                  },
+                  map: map
+                });
+
+                $('#map').show();
+              }
+            </script>
+
+            <div class="map-wrapper" style="margin-bottom:20px;">
+              <div id="map<%=@user.id%>" style="width: 100%; height: 300px; display:none;"></div>
+            </div>
+
+            <style type="text/css">
+              #map {
+                width: 100%;
+                height: 300px;
+                margin-left:auto;
+                margin-right:auto;
+                text-align:left;
+                display: none;
+              }
+            </style>
+
           <% if current_user.id == @user.id %>
             <%= button_to "Edit", edit_user_registration_path, method: :get, class: "btn btn-success btn-block" %>
           <% end %>
@@ -78,133 +91,216 @@
       </div>
     </div>
 
-    <!-- <div class="col-md-6 offset-md-3">
-      <table class="table bordered-table">
-        <thead>
-          <th colspan="2" style="text-align:center;"> <h3>Profile</h3> </th>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Name</td>
-            <td><%= @user.name %></td>
-          </tr>
-          <tr>
-            <td>Email</td>
-            <td><%= @user.email %></td>
-          </tr>
-          <tr>
-            <td>Image</td>
-            <td><%= image_tag(@user.image_name, width: "100%", height: "500px") %></td>
-          </tr>
-          <% if current_user.id == @user.id %>
-          <tr>
-            <td colspan="2"><%= button_to "Edit", edit_user_registration_path, method: :get, class: "btn btn-success btn-block" %></td>
-          </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div> -->
-
+    <!-- Display user posts -->
     <div class="col-md-8">
       <div class="card">
         <div class="card-header">
           <ul class="nav nav-pills card-header-pills">
             <li class="nav-item" style="cursor:pointer;">
-              <a class="nav-link active your-posts-link" id="<%= current_user.id %>">User Posts</a>
+              <a class="nav-link active user-posts-link" id="user-posts-<%= @user.id %>">User Posts</a>
             </li>
             <li class="nav-item" style="cursor:pointer;">
-              <a class="nav-link liked-posts-link" id="<%= current_user.id %>">Liked Posts</a>
+              <a class="nav-link liked-posts-link" id="liked-posts-<%= @user.id %>">Liked Posts</a>
             </li>
           </ul>
         </div>
       </div>
-      <% if @posts.blank? %>
-        <div class="card">
-          <div class="row card-body">
-            <div class="col-md-12" style="text-align:center;">
-              <p style="opacity:0.4; font-size:30px;">There's no post.</p>
-            </div>
-          </div>
-        </div>
-      <% else %>
-        <% @posts.each do |post| %>
-          <div class="card" style="cursor:pointer;">
-            <div class="row card-body users-posts">
-              <div class="col-md-1 user-image" style="float: left;">
-                <%= image_tag(post.user.image_name, width: "50px", height: "50px", style: "border-radius:4px;") %>
-              </div>
-              <div class="col-md-11" style="padding-left:30px;">
-                <div class="post-header">
-                  <strong><%= post.user.name %></strong>
-                  <% t = post.updated_at %>
-                  <span style="font-style:italic;"><%= t.strftime(" %Y %b %d") %></span> <br>
-                </div>
-                <div class="post-content">
-                  <%= post.content %> <br>
-                  <div class="post-image" style="clear: left;">
-                    <% unless post.image_name.blank? %>
-                    <%= image_tag(post.image_name, width: "100%", height: "100%", style: "margin-top:10px;") %>
-                    <% end %>
-                  </div>
-                  <div class="post-address">
-                    <% unless post.address.blank? %>
-                    <%= image_tag "http://maps.google.com/maps/api/staticmap?size=450x300&sensor=false&zoom=15&markers=#{post.latitude}%2C#{post.longitude}" %>
-                    <p> Address: <%= post.address %> </p>
 
-                    <script>
-                    var id = <%= post.id %>
-                    var postedLatitude = <%= post.latitude %>
-                    var postedLongitude = <%= post.longitude %>
-                    </script>
-                    <p class="posted-address" style="display:none;"></p>
+      <script>
+        // hide user post & show liked posts & change active class
+        $(document).ready(function(){
+          $('#liked-posts-<%= @user.id %>').click(function(){
+            $('.user-posts-link').removeClass('active');
+            $('.liked-posts-link').addClass('active');
+            $('.user-posts').hide();
+            $('.liked-posts').fadeIn();
+          });
 
-                    <style type="text/css">
-                    .posted-map {
-                      width: 100%;
-                      height: 400px;
-                      margin-left:auto;
-                      margin-right:auto;
-                      text-align:left;
-                      display: none;
-                    }
-                    </style>
-                    <div class="posted-map"></div>
-                    <% end %>
-                  </div>
-                </div>
+          $('#user-posts-<%= @user.id %>').click(function(){
+            $('.liked-posts-link').removeClass('active');
+            $('.user-posts-link').addClass('active');
+            $('.liked-posts').hide();
+            $('.user-posts').fadeIn();
+          });
+        });
+      </script>
 
-                <div class="post-link" style="display:block; padding-top:20px;">
-                  <% if Like.find_by(user_id: current_user.id, post_id: post.id) %>
-                  <%= link_to("/likes/#{post.id}/destroy", {method: "post"}) do %>
-                  <i class="fa fa-heart like-btn-unlike"></i>
-                  <% end %>
-                  <% else %>
-                  <%= link_to("/likes/#{post.id}/create", {method: "post"}) do %>
-                  <i class="fa fa-heart like-btn"></i>
-                  <% end %>
-                  <% end %>
-                  <%= Like.where(post_id: post.id).count %>
-                  <i class="fa fa-comment"></i>
-                  <i class="fa fa-share"></i>
-                  <% if current_user.id == post.user.id %>
-                  <ul style="float:right;">
-                    <li><%= link_to 'Show', post %></li>
-                    <li><%= link_to 'Edit', edit_post_path(post) %></li>
-                    <li><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></li>
-                  </ul>
-                  <% end %>
-                </div>
+      <!-- User posts -->
+      <div class="user-posts">
+        <% if @posts.blank? %>
+          <div class="card">
+            <div class="row card-body">
+              <div class="col-md-12" style="text-align:center;">
+                <p style="opacity:0.4; font-size:30px;">There's no post.</p>
               </div>
             </div>
           </div>
+        <% else %>
+          <% @posts.each do |post| %>
+            <div class="card" style="cursor:pointer;">
+              <div class="row card-body users-posts">
+                <div class="col-md-1 user-image" style="float: left;">
+                  <%= image_tag(post.user.image_name, width: "50px", height: "50px", style: "border-radius:4px;") %>
+                </div>
+                <div class="col-md-11" style="padding-left:30px;">
+                  <div class="post-header">
+                    <strong><%= post.user.name %></strong>
+                    <% t = post.updated_at %>
+                    <span style="font-style:italic;"><%= t.strftime(" %Y %b %d") %></span> <br>
+                  </div>
+                  <div class="post-content">
+                    <%= post.content %> <br>
+                    <div class="post-image" style="clear: left;">
+                      <% unless post.image_name.blank? %>
+                      <%= image_tag(post.image_name, width: "100%", height: "100%", style: "margin-top:10px;") %>
+                      <% end %>
+                    </div>
+                    <div class="post-address">
+                      <% unless post.address.blank? %>
+                      <%= image_tag "http://maps.google.com/maps/api/staticmap?size=450x300&sensor=false&zoom=15&markers=#{post.latitude}%2C#{post.longitude}" %>
+                      <p> Address: <%= post.address %> </p>
+
+                      <script>
+                      var id = <%= post.id %>
+                      var postedLatitude = <%= post.latitude %>
+                      var postedLongitude = <%= post.longitude %>
+                      </script>
+                      <p class="posted-address" style="display:none;"></p>
+
+                      <style type="text/css">
+                      .posted-map {
+                        width: 100%;
+                        height: 400px;
+                        margin-left:auto;
+                        margin-right:auto;
+                        text-align:left;
+                        display: none;
+                      }
+                      </style>
+                      <div class="posted-map"></div>
+                      <% end %>
+                    </div>
+                  </div>
+
+                  <div class="post-link" style="display:block; padding-top:20px;">
+                    <% if Like.find_by(user_id: current_user.id, post_id: post.id) %>
+                      <%= link_to("/likes/#{post.id}/destroy", {method: "post"}) do %>
+                        <i class="fa fa-heart like-btn-unlike"></i>
+                      <% end %>
+                    <% else %>
+                      <%= link_to("/likes/#{post.id}/create", {method: "post"}) do %>
+                        <i class="fa fa-heart like-btn"></i>
+                      <% end %>
+                    <% end %>
+                    <%= Like.where(post_id: post.id).count %>
+                    <i class="fa fa-comment"></i>
+                    <i class="fa fa-share"></i>
+                    <% if current_user.id == post.user.id %>
+                      <ul style="float:right;">
+                        <li><%= link_to 'Show', post %></li>
+                        <li><%= link_to 'Edit', edit_post_path(post) %></li>
+                        <li><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+                      </ul>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
         <% end %>
-      <% end %>
+      </div>
+
+      <!-- Current user liked posts -->
+      <div class="liked-posts" style="display: none;">
+        <% if @liked.blank? %>
+          <div class="card">
+            <div class="row card-body">
+              <div class="col-md-12" style="text-align:center;">
+                <p style="opacity:0.4; font-size:30px;">There's no post.</p>
+              </div>
+            </div>
+          </div>
+        <% else %>
+          <% @liked.each do |like| %>
+            <div class="card" style="cursor:pointer;">
+              <div class="row card-body users-posts">
+                <div class="col-md-1 user-image" style="float: left;">
+                  <%= image_tag(like.post.user.image_name, width: "50px", height: "50px", style: "border-radius:4px;") %>
+                </div>
+                <div class="col-md-11" style="padding-left:30px;">
+                  <div class="post-header">
+                    <strong><%= like.post.user.name %></strong>
+                    <% t = like.post.updated_at %>
+                    <span style="font-style:italic;"><%= t.strftime(" %Y %b %d") %></span> <br>
+                  </div>
+                  <div class="post-content">
+                    <%= like.post.content %> <br>
+                    <div class="post-image" style="clear: left;">
+                      <% unless like.post.image_name.blank? %>
+                        <%= image_tag(like.post.image_name, width: "100%", height: "100%", style: "margin-top:10px;") %>
+                      <% end %>
+                    </div>
+                    <div class="post-address">
+                      <% unless like.post.address.blank? %>
+                      <%= image_tag "http://maps.google.com/maps/api/staticmap?size=450x300&sensor=false&zoom=15&markers=#{like.post.latitude}%2C#{like.post.longitude}" %>
+                      <p> Address: <%= like.post.address %> </p>
+
+                      <script>
+                      var id = <%= post.id %>
+                      var postedLatitude = <%= like.post.latitude %>
+                      var postedLongitude = <%= like.post.longitude %>
+                      </script>
+                      <p class="posted-address" style="display:none;"></p>
+
+                      <style type="text/css">
+                      .posted-map {
+                        width: 100%;
+                        height: 400px;
+                        margin-left:auto;
+                        margin-right:auto;
+                        text-align:left;
+                        display: none;
+                      }
+                      </style>
+                      <div class="posted-map"></div>
+                      <% end %>
+                    </div>
+                  </div>
+
+                  <div class="post-link" style="display:block; padding-top:20px;">
+                    <% if Like.find_by(user_id: current_user.id, post_id: like.post.id) %>
+                      <%= link_to("/likes/#{like.post.id}/destroy", {method: "post"}) do %>
+                        <i class="fa fa-heart like-btn-unlike"></i>
+                      <% end %>
+                    <% else %>
+                      <%= link_to("/likes/#{like.post.id}/create", {method: "post"}) do %>
+                        <i class="fa fa-heart like-btn"></i>
+                      <% end %>
+                    <% end %>
+                    <%= Like.where(post_id: like.post.id).count %>
+                    <i class="fa fa-comment"></i>
+                    <i class="fa fa-share"></i>
+                    <% if current_user.id == like.post.user.id %>
+                      <ul style="float:right;">
+                        <li><%= link_to 'Show', like.post %></li>
+                        <li><%= link_to 'Edit', edit_post_path(like.post) %></li>
+                        <li><%= link_to 'Destroy', like.post, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+                      </ul>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+
     </div>
+
   </div>
 
   <div class="row">
-    <div class="col-md-12">
-      <hr>
+    <div class="col-md-8 offset-md-2">
       <%= button_to "Back", posts_path, method: :get, class: "btn btn-secondary btn-block", style: "margin-bottom:20px;" %>
     </div>
   </div>

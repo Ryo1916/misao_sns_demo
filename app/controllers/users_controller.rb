@@ -8,7 +8,7 @@ class UsersController < ApplicationController
     else
       Post.where(user_id: params[:id]).order(id: :desc)
     end
-    @likes = Like.where(user_id: params[:id]).order(id: :desc)
+    @liked = Like.where(user_id: params[:id]).order(id: :desc)
   end
 
   def index

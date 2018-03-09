@@ -28,6 +28,10 @@ gem 'will_paginate'
 gem 'bootstrap'
 # Use bootstrap-sass
 gem 'bootstrap-sass'
+# Use bootstrap form
+gem "bootstrap_form",
+    git: "https://github.com/bootstrap-ruby/bootstrap_form.git",
+    branch: "master"
 # Use autoprefixer-rails
 gem 'autoprefixer-rails'
 # Use jquery

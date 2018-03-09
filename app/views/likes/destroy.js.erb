@@ -1,5 +1,2 @@
-// $("#like-buttons").html("<%= j(render partial: 'like', locals: { posts: @posts, likes: @likes }) %>");
-var post_id = <%= post.id %>
-alert(post_id);
-$('#like_form_' + post_id).html("<%= escape_javascript(render('likes/like')) %>");
-$('#like-count-' + post_id).html("<%= post.likes_count %>");
+$('#like_form_<%= @post.id %>').html("<%= j(render partial: 'likes/like', locals: { post: @post }) %>");
+$('#like-count-<%= @post.id %>').html("<%= @post.likes_count %>");

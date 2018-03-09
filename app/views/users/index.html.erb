@@ -5,40 +5,52 @@
       <div class="card">
       <div class="card-body">
         <% @users.each do |user| %>
-            <div class="row" style="margin-bottom:10px; margin-left:5px;">
+          <div class="row" style="margin-bottom:10px; margin-left:5px;">
+            <div class="users-info">
               <%= link_to("/users/#{user.id}") do %>
-              <ul>
-                <li style="float:left; margin-right:10px; margin-right:10px;">
-                  <div style="display: inline;">
-                    <%= image_tag(user.image_name, width: "60px", height: "60px", style: "border-radius:4px; display:inline;") %>
-                  </div>
+                <ul style="float:left;">
+                  <li style="float:left; margin-right:10px; margin-right:10px;">
+                    <div style="display: inline;">
+                      <%= image_tag(user.image_name, width: "60px", height: "60px", style: "border-radius:4px; display:inline;") %>
+                    </div>
+                  </li>
+                  <li style="float:left; margin-right:10px; margin-right:10px;">
+                    <div style="display: inline;">
+                      <strong><%= user.name %></strong><br>
+                      <span><%= user.email %></span><br>
+                    </div>
+                  </li>
+                </ul>
+              <% end %>
+            </div>
+            <div class="stat" style="float:right;">
+              <ul style="float:right;">
+                <li>
+                  <%= link_to following_user_path(user) do %>
+                  <!-- <a href="<%= following_user_path(user) %>"> -->
+                    <strong>
+                      <%= user.following.count %>
+                    </strong>
+                    following
+                  <!-- </a> -->
+                  <% end %>
                 </li>
-                <li style="float:left; margin-right:10px; margin-right:10px;">
-                  <div style="display: inline;">
-                    <strong><%= user.name %></strong><br>
-                    <span><%= user.email %></span><br>
-                  </div>
+                <li>
+                  <%= link_to followers_user_path(user) do %>
+                  <!-- <a href="<%= followers_user_path(user) %>"> -->
+                    <strong>
+                      <%= user.followers.count %>
+                    </strong>
+                    followers
+                  <!-- </a> -->
+                  <% end %>
                 </li>
               </ul>
-              <% end %>
-              <div class="stat">
-                <a href="<%= following_user_path(user) %>">
-                  <strong>
-                    <%= user.following.count %>
-                  </strong>
-                  following
-                </a>
-                <a href="<%= followers_user_path(user) %>">
-                  <strong>
-                    <%= user.followers.count %>
-                  </strong>
-                  followers
-                </a>
-              </div>
             </div>
-            <hr>
+          </div>
+          <hr>
         <% end %>
-        </div>
+      </div>
       </div>
     </div>
   </div>

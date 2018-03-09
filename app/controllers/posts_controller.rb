@@ -7,13 +7,35 @@ class PostsController < ApplicationController
   # GET /posts.json
   def index
     @post = Post.new
-    @users = User.all
     @posts = if params[:search]
-      Post.where('content LIKE ?', "%#{params[:search]}%").order(id: :desc)
+      Post.where(user_id: current_user.following).where('content LIKE ?', "%#{params[:search]}%").order(updated_at: :desc)
     else
-      Post.all.order(id: :desc)
+    # when you want to display all posts, use the below line after remove '#'.
+      # Post.all.order(id: :desc)
+    # when display posts of followings user, use the below line
+      following_ids = "SELECT followed_id FROM relationships WHERE follower_id = #{current_user.id}"
+      Post.where("user_id IN (#{following_ids}) OR user_id = :user_id", user_id: current_user.id).order(updated_at: :desc)
     end
 
+  # when you want to display all users in "you may also like", use below line.
+    # @users = User.all
+  # when you want to display friends of friends(followers of followers) in "you may also like", use below line.
+    @followings = current_user.following    # followers of current user
+    @temps = Array.new
+    @followings.each do |friend|
+      friend.following.each do |fof|
+        if fof != current_user              # except currnet user
+          @temps << fof                     # assign friends of friends to @temps
+        end
+      end
+      @temps.uniq                           # eliminate duplication from @temps
+    end
+    @fofs = @temps - @followings            # eliminate duplication from @followings
+
+  # Display comments and comment form
+    @comment = Comment.new
+
+  # if you want to display location info as a google map, use below lines
     # @posts.each do |f|
     #   @hash = Gmaps4rails.build_markers(f) do |post, marker|
     #     marker.lat post.latitude

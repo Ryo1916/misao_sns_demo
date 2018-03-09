@@ -1,4 +1,12 @@
 GIT
+  remote: https://github.com/bootstrap-ruby/bootstrap_form.git
+  revision: 824b00f5c5e30e356aaf9a8a60b6158a872f4e00
+  branch: master
+  specs:
+    bootstrap_form (4.0.0.dev)
+      rails (>= 5.0)
+
+GIT
   remote: https://github.com/codahale/bcrypt-ruby.git
   revision: f2db689ba567d1a018f4dacb1ccf909adc93e887
   specs:
@@ -265,6 +273,7 @@ DEPENDENCIES
   bcrypt!
   bootstrap
   bootstrap-sass
+  bootstrap_form!
   byebug
   capybara (~> 2.13)
   carrierwave (~> 0.10.0)

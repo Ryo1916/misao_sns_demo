@@ -10,6 +10,7 @@
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
  *
+ *= require rails_bootstrap_forms
  *= require_tree .
  *= require_self
  */
@@ -275,6 +276,114 @@ a {
 
 .like-btn-unlike {
   color: #ff2581;
+}
+
+/* comments ================================ */
+.balloon {
+  margin: 60px 50px;
+  padding : 0 40px;
+  position: relative;
+}
+
+.balloon:after,.balloon:before {
+  clear: both;
+  content: "";
+  display: block;
+}
+
+.balloon-image-left {
+  position: absolute;
+  left: 0;
+  margin: 0;
+  width: 60px;
+  height: 60px;
+}
+
+.balloon-image-right {
+  position: absolute;
+  right: 0;
+  margin: 0;
+  width: 60px;
+  height: 60px;
+}
+
+.balloon figure img {
+  width: 100%;
+  height: 100%;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  margin: 0;
+}
+
+.balloon-image-description {
+  padding: 5px 0 0;
+  font-size: 12px;
+  text-align: center;
+}
+
+.balloon-text-right {
+  position: relative;
+  margin-left: 40px;
+  padding: 10px;
+  border: 1px solid #aaa;
+  border-radius: 10px;
+  float: left;
+  max-width: 100%;
+}
+
+.balloon-text-left {
+  position: relative;
+  margin-right: 40px;
+  padding: 10px;
+  border: 1px solid #aaa;
+  border-radius: 10px;
+  float: right;
+  max-width: 100%;
+}
+
+.balloon p {
+  margin: 0 0 20px;
+}
+
+.balloon p:last-child {
+  margin-bottom: 0;
+}
+
+/* 会話 */
+.balloon-text-right:before {
+  position: absolute;
+  content: '';
+  border: 10px solid transparent;
+  border-right: 10px solid #aaa;
+  top: 15px;
+  left: -20px;
+}
+
+.balloon-text-right:after {
+  position: absolute;
+  content: '';
+  border: 10px solid transparent;
+  border-right: 10px solid #fff;
+  top: 15px;
+  left: -19px;
+}
+
+.balloon-text-left:before {
+  position: absolute;
+  content: '';
+  border: 10px solid transparent;
+  border-left: 10px solid #aaa;
+  top: 15px;
+  right: -20px;
+}
+
+.balloon-text-left:after {
+  position: absolute;
+  content: '';
+  border: 10px solid transparent;
+  border-left: 10px solid #fff;
+  top: 15px;
+  right: -19px;
 }
 
 .buttons {
